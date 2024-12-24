@@ -26,6 +26,7 @@ class BasePage<SCREEN extends Screen, SCREEN_STATE extends ScreenState,
   final Widget? loading;
   final bool hideDefaultLoading;
   final Function(Effect effect) onEffect;
+  final FloatingActionButton? floatingActionButton;
 
   const BasePage({
     super.key,
@@ -38,6 +39,7 @@ class BasePage<SCREEN extends Screen, SCREEN_STATE extends ScreenState,
     this.loading,
     this.hideDefaultLoading = false,
     this.onEffect = noopEffectHandler,
+    this.floatingActionButton
   });
 
   @override
@@ -71,6 +73,7 @@ class BasePage<SCREEN extends Screen, SCREEN_STATE extends ScreenState,
         body: body,
         hideDefaultLoading: hideDefaultLoading,
         loading: loading,
+        floatingActionButton: floatingActionButton,
       ),
     );
   }
@@ -83,6 +86,7 @@ class _BasePageContent<VIEW_MODEL extends BaseViewModel<Screen, SCREEN_STATE>,
   final List<Widget>? appBarActions;
   final Widget body;
   final Widget? loading;
+  final FloatingActionButton? floatingActionButton;
 
   const _BasePageContent({
     super.key,
@@ -91,6 +95,7 @@ class _BasePageContent<VIEW_MODEL extends BaseViewModel<Screen, SCREEN_STATE>,
     required this.body,
     required this.loading,
     required this.hideDefaultLoading,
+    this.floatingActionButton
   });
 
   @override
@@ -105,6 +110,7 @@ class _BasePageContent<VIEW_MODEL extends BaseViewModel<Screen, SCREEN_STATE>,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: context.theme.scaffoldBackgroundColor,
+          floatingActionButton: floatingActionButton,
           appBar: AppBar(
             leading: hasBackButton
                 ? AppBarBackButton<VIEW_MODEL, SCREEN_STATE>(

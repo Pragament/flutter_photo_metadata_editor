@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,9 @@ import 'package:flutter_template/presentation/template_app.dart';
 import 'package:flutter_template/repository/di/repository_module.dart';
 import 'package:flutter_template/services/di/service_module.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void startApp() async {
@@ -66,6 +68,9 @@ Future initialiseApp({bool test = false}) async {
 Future _initSharedPreferences() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   GetIt.instance.registerSingleton(sharedPreferences);
+  final appDocumentDir = await getApplicationDocumentsDirectory();
+  await Hive.initFlutter(appDocumentDir.path);
+  await Hive.openBox<String>('svgBox');
 }
 
 void _initialiseGetIt() {

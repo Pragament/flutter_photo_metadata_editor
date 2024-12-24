@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:auto_route/annotations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,8 @@ import 'package:flutter_template/presentation/destinations/weather/home/home_scr
 import 'package:flutter_template/presentation/destinations/weather/home/home_screen_intent.dart';
 import 'package:flutter_template/presentation/destinations/weather/home/home_screen_state.dart';
 import 'package:flutter_template/presentation/destinations/weather/home/home_view_model.dart';
-
+import 'package:image_picker/image_picker.dart';
+import '../../../base/svg_provider/svg_provider.dart';
 import 'widgets/home_page_body/home_page_body.dart';
 
 @RoutePage()
@@ -46,7 +48,22 @@ class HomePage extends ConsumerWidget {
         ),
         const ThemePicker(),
       ],
-      body: const HomePageBody(),
+      body: HomePageBody(),
+      floatingActionButton: FloatingActionButton(onPressed: ()async{
+          final ImagePicker _picker = ImagePicker();
+          final XFile? image =
+              await _picker.pickImage(source: ImageSource.gallery);
+          if (image != null && image.path.endsWith('.svg')) {
+            final svgString = await File(image.path).readAsString();
+            ref.read(svgProvider.notifier).addSVG(svgString);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(
+              "Image loaded successfully",
+              style:
+                  TextStyle(color: Colors.white,),
+            )));
+          }
+        },child: Icon(Icons.add),),
     );
   }
 }
