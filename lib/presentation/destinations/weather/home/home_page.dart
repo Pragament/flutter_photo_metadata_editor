@@ -48,22 +48,22 @@ class HomePage extends ConsumerWidget {
         ),
         const ThemePicker(),
       ],
-      body: HomePageBody(),
+      body: const HomePageBody(),
       floatingActionButton: FloatingActionButton(onPressed: ()async{
-          final ImagePicker _picker = ImagePicker();
+          final ImagePicker picker = ImagePicker();
           final XFile? image =
-              await _picker.pickImage(source: ImageSource.gallery);
+              await picker.pickImage(source: ImageSource.gallery);
           if (image != null && image.path.endsWith('.svg')) {
             final svgString = await File(image.path).readAsString();
-            ref.read(svgProvider.notifier).addSVG(svgString);
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            await ref.read(svgProvider.notifier).addSVG(svgString);
+            context.mounted?ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text(
               "Image loaded successfully",
               style:
                   TextStyle(color: Colors.white,),
-            )));
+            ))):null;
           }
-        },child: Icon(Icons.add),),
+        },child: const Icon(Icons.add),),
     );
   }
 }
